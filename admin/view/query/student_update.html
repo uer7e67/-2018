@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Document</title>
+<!--[if lt IE 9]>
+<script type="text/javascript" src="lib/html5shiv.js"></script>
+<script type="text/javascript" src="lib/respond.min.js"></script>
+<![endif]-->
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/static/h-ui/css/H-ui.min.css" />
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/static/h-ui.admin/css/H-ui.admin.css" />
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/static/lib/Hui-iconfont/1.0.8/iconfont.css" />
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/static/h-ui.admin/skin/default/skin.css" id="skin" />
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/static/h-ui.admin/css/style.css" />
+<!--_footer 作为公共模版分离出去-->
+<script type="text/javascript" src="__PUBLIC__/static/lib/jquery/1.9.1/jquery.min.js"></script> 
+<script type="text/javascript" src="__PUBLIC__/static/lib/layer/2.4/layer.js"></script>
+<script type="text/javascript" src="__PUBLIC__/static/h-ui/js/H-ui.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/static/h-ui.admin/js/H-ui.admin.js"></script> 
+<script type="text/javascript" src="__PUBLIC__/static/lib/My97DatePicker/4.8/WdatePicker.js"></script> 
+<script type="text/javascript" src="__PUBLIC__/static/lib/datatables/1.10.0/jquery.dataTables.min.js"></script> 
+<script type="text/javascript" src="__PUBLIC__/static/lib/laypage/1.2/laypage.js"></script>
+<!--/_footer 作为公共模版分离出去-->
+<!--[if IE 6]>
+<script type="text/javascript" src="lib/DD_belatedPNG_0.0.8a-min.js" ></script>
+<script>DD_belatedPNG.fix('*');</script>
+<![endif]-->
+</head>
+<body>
+    <nav class="breadcrumb">
+        <i class="Hui-iconfont">&#xe67f;</i>学生管理<span class="c-gray en">&gt;</span>学生信息修改
+        <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新">
+            <i class="Hui-iconfont">&#xe68f;</i>
+        </a>
+    </nav>
+
+    <div class="page-container">
+        <div class="panel panel-default">
+            <div class="panel-header">面板标题</div>
+            <div class="panel-body">
+                <article class="page-container">
+                    <form class="form" action = "{:url("admin/query/student_update")}" method="POST">
+                        <input type="hidden" name="id" value="{$view.id}">
+                        <div class="row cl">
+                            <label class="form-label col-sm-2"><span class="c-red">*</span>姓名：</label>
+                            <div class="formControls col-sm-5">
+                                <input type="text" class="input-text" name="name" value="{$view.name}">
+                            </div>
+                        </div>
+                        <div class="row cl">
+                            <label class="form-label col-sm-2"><span class="c-red">*</span>性别：</label>
+                            <div class="formControls col-sm-5">
+                                <select name="sex">
+                                    <option value="0">男</option>
+                                    <option value="1">女</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row cl">
+                            <label class="form-label col-sm-2"><span class="c-red">*</span>民族：</label>
+                            <div class="formControls col-sm-5">
+                                <input type="text" class="input-text" name="national" value="{$view.national}">
+                            </div>
+                        </div>
+
+                        <div class="row cl">
+                            <label class="form-label col-sm-2"><span class="c-red">*</span>生日：</label>
+                            <div class="formControls col-sm-5">
+                                <input value="{$view.birthday}" type="text" onfocus="WdatePicker({})" name="birthday" class="input-text Wdate" style="width:120px">
+                            </div>
+                        </div>
+
+                        <div class="row cl">
+                            <label class="form-label col-sm-2"><span class="c-red">*</span>户籍所在地：</label>
+                            <div class="formControls col-sm-5">
+                                <input type="text" class="input-text" name="domicile" value="{$view.domicile}">
+                            </div>
+                        </div>
+
+                        <div class="row cl">
+                            <label class="form-label col-sm-2"><span class="c-red">*</span>身份证号：</label>
+                            <div class="formControls col-sm-5">
+                                <input type="text" class="input-text" name="id_number" value="{$view.id_number}">
+                            </div>
+                        </div>
+
+                               <div class="row cl">
+                            <label class="form-label col-sm-2"><span class="c-red">*</span>户籍类型：</label>
+                            <div class="formControls col-sm-5">
+                                <select name="register_type">
+                                    <option value="农业户口">农业户口</option>
+                                    <option value="非农业户口">非农业户口</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row cl">
+                            <label class="form-label col-sm-2"><span class="c-red">*</span>学历：</label>
+                            <div class="formControls col-sm-5">
+                                <select name="education">
+                                    <option value="小学及以下">小学及以下</option>
+                                    <option value="中学">中学</option>
+                                    <option value="高中">高中</option>
+                                    <option value="大学">大学</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row cl">
+                            <label class="form-label col-sm-2"><span class="c-red">*</span>残障类型：</label>
+                            <div class="formControls col-sm-5">
+                                <select name="deformity_type">
+                                    <option value="智力残疾">智力残疾</option>
+                                    <option value="视力残疾">视力残疾</option>
+                                    <option value="听力残疾">听力残疾</option>
+                                    <option value="其他残疾">其他残疾</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row cl">
+                            <label class="form-label col-sm-2"><span class="c-red">*</span>政治面貌：</label>
+                            <div class="formControls col-sm-5">
+                                <select name="political_visage">
+                                    <option value="人民群众">人民群众</option>
+                                    <option value="共青团员">共青团员</option>
+                                    <option value="共产党员">共产党员</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row cl">
+                            <label class="form-label col-sm-2"><span class="c-red">*</span>学校：</label>
+                            <div class="formControls col-sm-5">
+                                <input type="text" class="input-text" name="school_id" value="{$view.school_id}">
+                            </div>
+                        </div>
+
+                        <div class="row cl">
+                            <label class="form-label col-sm-2"><span class="c-red">*</span>状态：</label>
+                            <div class="formControls col-sm-5">
+                                <select name="state">
+                                    <option value="在读">在读</option>
+                                    <option value="已毕业">已毕业</option>
+                                    <option value="其他状态">其他状态</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row cl">
+                            <label class="form-label col-sm-2"><span class="c-red">*</span>入学日期：</label>
+                            <div class="formControls col-sm-5">
+                                <input type="text" onfocus="WdatePicker({})" name="enter_school_date" class="input-text Wdate" style="width:120px" value="{$view.enter_school_date}">
+                            </div>
+                        </div>
+
+                        <div class="row cl">
+                            <label class="form-label col-sm-2"><span class="c-red">*</span>专业：</label>
+                            <div class="formControls col-sm-5">
+                                <input type="text" class="input-text" name="major" value="{$view.major}">
+                            </div>
+                        </div>
+
+                        <div class="row cl">
+                            <label class="form-label col-sm-2"><span class="c-red">*</span>班级：</label>
+                            <div class="formControls col-sm-5">
+                                <input type="text" class="input-text" name="class" value="{$view.class}">
+                            </div>
+                        </div>
+
+                        <div class="row cl">
+                            <label class="form-label col-sm-2"><span class="c-red">*</span>学号：</label>
+                            <div class="formControls col-sm-5">
+                                <input type="text" class="input-text" name="stu_id" value="{$view.stu_id}">
+                            </div>
+                        </div>
+
+                        <div class="row cl">
+                            <div class="col-sm-3 col-sm-offset-1">
+                                <input class="btn btn-primary radius" type="submit" value="&nbsp;&nbsp;提交&nbsp;&nbsp;">
+                            </div>
+                        </div>
+                    </form>
+                </article>    
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+

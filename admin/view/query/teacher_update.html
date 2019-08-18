@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Document</title>
+<!--[if lt IE 9]>
+<script type="text/javascript" src="lib/html5shiv.js"></script>
+<script type="text/javascript" src="lib/respond.min.js"></script>
+<![endif]-->
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/static/h-ui/css/H-ui.min.css" />
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/static/h-ui.admin/css/H-ui.admin.css" />
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/static/lib/Hui-iconfont/1.0.8/iconfont.css" />
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/static/h-ui.admin/skin/default/skin.css" id="skin" />
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/static/h-ui.admin/css/style.css" />
+<!--_footer 作为公共模版分离出去-->
+<script type="text/javascript" src="__PUBLIC__/static/lib/jquery/1.9.1/jquery.min.js"></script> 
+<script type="text/javascript" src="__PUBLIC__/static/lib/layer/2.4/layer.js"></script>
+<script type="text/javascript" src="__PUBLIC__/static/h-ui/js/H-ui.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/static/h-ui.admin/js/H-ui.admin.js"></script> 
+<script type="text/javascript" src="__PUBLIC__/static/lib/My97DatePicker/4.8/WdatePicker.js"></script> 
+<script type="text/javascript" src="__PUBLIC__/static/lib/datatables/1.10.0/jquery.dataTables.min.js"></script> 
+<script type="text/javascript" src="__PUBLIC__/static/lib/laypage/1.2/laypage.js"></script>
+<!--/_footer 作为公共模版分离出去-->
+<!--[if IE 6]>
+<script type="text/javascript" src="lib/DD_belatedPNG_0.0.8a-min.js" ></script>
+<script>DD_belatedPNG.fix('*');</script>
+<![endif]-->
+</head>
+<body>
+    <nav class="breadcrumb">
+        <i class="Hui-iconfont">&#xe67f;</i>教师管理<span class="c-gray en">&gt;</span>教师信息修改
+        <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新">
+            <i class="Hui-iconfont">&#xe68f;</i>
+        </a>
+    </nav>
+
+    <div class="page-container">
+        <div class="panel panel-default">
+            <div class="panel-header">教职工信息</div>
+            <div class="panel-body">
+                <article class="page-container">
+                    <form class="form" action = "{:url("admin/query/teacher_update")}" method="POST">
+                        <input type="hidden" class="input-text" name="id" value="{$view.id}">
+                        <div class="row cl">
+                            <label class="form-label col-sm-2"><span class="c-red">*</span>姓名：</label>
+                            <div class="formControls col-sm-5">
+                                <input type="text" class="input-text" name="name" value="{$view.name}">
+                            </div>
+                        </div>
+                        <div class="row cl">
+                            <label class="form-label col-sm-2"><span class="c-red">*</span>教职工编号：</label>
+                            <div class="formControls col-sm-5">
+                                <input type="text" class="input-text" name="tc_id" value="{$view.tc_id}">
+                            </div>
+                        </div>
+                        <div class="row cl">
+                            <label class="form-label col-sm-2"><span class="c-red">*</span>性别：</label>
+                            <div class="formControls col-sm-5">
+                                <select name="sex">
+                                    <option value="0">男</option>
+                                    <option value="1">女</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row cl">
+                            <label class="form-label col-sm-2"><span class="c-red">*</span>民族：</label>
+                            <div class="formControls col-sm-5">
+                                <input type="text" class="input-text" name="national" value="{$view.national}">
+                            </div>
+                        </div>
+
+                        <div class="row cl">
+                            <label class="form-label col-sm-2"><span class="c-red">*</span>生日：</label>
+                            <div class="formControls col-sm-5">
+                                <input value="{$view.birthday}" type="text" onfocus="WdatePicker({})" name="birthday" class="input-text Wdate" style="width:120px">
+                            </div>
+                        </div>
+
+                        <div class="row cl">
+                            <label class="form-label col-sm-2"><span class="c-red">*</span>户籍所在地：</label>
+                            <div class="formControls col-sm-5">
+                                <input type="text" class="input-text" name="domicile" value="{$view.domicile}">
+                            </div>
+                        </div>
+
+                        <div class="row cl">
+                            <label class="form-label col-sm-2"><span class="c-red">*</span>身份证号：</label>
+                            <div class="formControls col-sm-5">
+                                <input type="text" class="input-text" name="id_number" value="{$view.id_number}">
+                            </div>
+                        </div>
+
+                        <div class="row cl">
+                            <label class="form-label col-sm-2"><span class="c-red">*</span>学历：</label>
+                            <div class="formControls col-sm-5">
+                                <select name="education">
+                                    <option value="高中">高中</option>
+                                    <option value="大专">大专</option>
+                                    <option value="本科">本科</option>
+                                    <option value="研究生">研究生</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row cl">
+                            <label class="form-label col-sm-2"><span class="c-red">*</span>入职日期：</label>
+                            <div class="formControls col-sm-5">
+                                <input value="{$view.entry_date}" type="text" onfocus="WdatePicker({})" name="entry_date" class="input-text Wdate" style="width:120px">
+                            </div>
+                        </div>    
+
+                        <div class="row cl">
+                            <label class="form-label col-sm-2"><span class="c-red">*</span>是否有接受过相关专业培训经验：</label>
+                            <div class="formControls col-sm-5">
+                                <select name="train_prifessional">
+                                    <option value="0">是</option>
+                                    <option value="1">否</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row cl">
+                            <label class="form-label col-sm-2"><span class="c-red">*</span>在职学校：</label>
+                            <div class="formControls col-sm-5">
+                                <input type="text" class="input-text" name="school_id" value="{$view.school_id}">
+                            </div>
+                        </div>
+
+                        <div class="row cl">
+                            <div class="col-sm-3 col-sm-offset-1">
+                                <input class="btn btn-primary radius" type="submit" value="&nbsp;&nbsp;提交&nbsp;&nbsp;">
+                            </div>
+                        </div>
+                    </form>
+                </article>    
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+

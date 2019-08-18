@@ -1,0 +1,125 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>教职工查询</title>
+<meta name="renderer" content="webkit|ie-comp|ie-stand">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<!--[if lt IE 9]>
+<script type="text/javascript" src="lib/html5shiv.js"></script>
+<script type="text/javascript" src="lib/respond.min.js"></script>
+<![endif]-->
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/static/h-ui/css/H-ui.min.css" />
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/static/h-ui.admin/css/H-ui.admin.css" />
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/static/lib/Hui-iconfont/1.0.8/iconfont.css" />
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/static/h-ui.admin/skin/default/skin.css" id="skin" />
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/static/h-ui.admin/css/style.css" />
+<!--_footer 作为公共模版分离出去-->
+<script type="text/javascript" src="__PUBLIC__/static/lib/jquery/1.9.1/jquery.min.js"></script> 
+<script type="text/javascript" src="__PUBLIC__/static/lib/layer/2.4/layer.js"></script>
+<script type="text/javascript" src="__PUBLIC__/static/h-ui/js/H-ui.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/static/h-ui.admin/js/H-ui.admin.js"></script> 
+<!--/_footer 作为公共模版分离出去-->
+<!--[if IE 6]>
+<script type="text/javascript" src="lib/DD_belatedPNG_0.0.8a-min.js" ></script>
+<script>DD_belatedPNG.fix('*');</script>
+<![endif]-->
+
+<style type="text/css">
+.select_style{
+    border:solid 1px #ddd;
+    padding: 5px 10px; 
+    size: 10px;
+}
+
+.select_style{
+    border:solid 1px #ddd;
+    padding: 5px 10px; 
+    size: 10px;
+}
+.pagelist {padding:10px 0; text-align:center;}
+.pagelist span,.pagelist a{ border-radius:3px; border:1px solid #dfdfdf;display:inline-block; padding:5px 12px;}
+.pagelist a{ margin:0 3px;}
+.pagelist span.current{ background:#09F; color:#FFF; border-color:#09F; margin:0 2px;}
+.pagelist a:hover{background:#09F; color:#FFF; border-color:#09F; }
+.pagelist label{ padding-left:15px; color:#999;}
+.pagelist label b{color:red; font-weight:normal; margin:0 3px;}
+
+</style>
+</head>
+<body>
+<nav class="breadcrumb">
+    <i class="Hui-iconfont">&#xe67f;</i>查询与统计<span class="c-gray en">&gt;</span>教职工查询
+    <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新">
+        <i class="Hui-iconfont">&#xe68f;</i>
+    </a>
+</nav>
+
+
+
+<div class="page-container">
+	<div class="text-c">
+		<form action="" method="POST">
+			学校： 
+			<span class="">
+				<select class="select_style" size="1" name="school_id">
+					{volist name="school" id="vo"}
+					<option value="{$vo.id}">{$vo.name}</option>
+					{/volist}
+				</select>
+			</span>
+			<input type="text" name="teacher_id" id="" placeholder="教师工号" style="width:250px" class="input-text">
+
+			<button name="" id="btn1" class="btn btn-success" type="submit"><i class="Hui-iconfont">&#xe665;</i>搜索</button>
+		</form>
+		
+	</div>
+
+	<div class="page-container">
+		<div class="panel panel-default">
+			<div class="panel-header">搜索结果 <span></span></div>
+			<div class="panel-body">
+				<table class="table table-border table-bg table-bordered">
+					<thead>
+						<tr><th>姓名</th><th>教职工编号</th><th>性别</th><th>民族</th><th>出生日期</th><th>户籍所在地</th>
+						    <th>身份证号</th><th>入职日期</th>
+						    <th>学历</th>
+							<th>职称</th>
+							<th>是否接受过相关培训</th>
+							<th>操作</th>
+						</tr>
+					</thead>
+					<tbody>
+						{volist name="teacher" id = "vo"}
+						<tr class="">
+							<td>{$vo.name}</td>
+							<td>{$vo.tc_id}</td>
+							<td><?php if($vo['sex']==0) echo "男"; else echo "女";?></td>
+							<td>{$vo.national}</td>
+							<td>{$vo.birthday}</td>
+							<td>{$vo.domicile}</td>
+							<td>{$vo.id_number}</td>
+							<td>{$vo.entry_date}</td>   
+							<td>{$vo.education}</td>
+							<td>{$vo.title}</td>
+							<td><?php if($vo['train_prifessional']==0) echo "否"; else echo "是";?></td>
+							<td>
+								<a href="{:url('admin/query/teacher_update',array( 'id' => $vo['id']))}">修改</a> | 
+								<a href="{:url('admin/query/teacher_del', array('id' => $vo['id']))}">删除</a>
+							</td>   
+						</tr>
+						{/volist}
+					</tbody>
+				</table>    
+			</div>
+			<div class="pagelist">
+                {$teacher->render()}
+            </div>
+		</div>
+	</div>
+</div>
+
+</body>
+</html>

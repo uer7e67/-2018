@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>学生查询</title>
+<!--[if lt IE 9]>
+<script type="text/javascript" src="lib/html5shiv.js"></script>
+<script type="text/javascript" src="lib/respond.min.js"></script>
+<![endif]-->
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/static/h-ui/css/H-ui.min.css" />
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/static/h-ui.admin/css/H-ui.admin.css" />
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/static/lib/Hui-iconfont/1.0.8/iconfont.css" />
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/static/h-ui.admin/skin/default/skin.css" id="skin" />
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/static/h-ui.admin/css/style.css" />
+<!--_footer 作为公共模版分离出去-->
+<script type="text/javascript" src="__PUBLIC__/static/lib/jquery/1.9.1/jquery.min.js"></script> 
+<script type="text/javascript" src="__PUBLIC__/static/lib/layer/2.4/layer.js"></script>
+<script type="text/javascript" src="__PUBLIC__/static/h-ui/js/H-ui.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/static/h-ui.admin/js/H-ui.admin.js"></script> 
+<!--/_footer 作为公共模版分离出去-->
+<!--[if IE 6]>
+<script type="text/javascript" src="lib/DD_belatedPNG_0.0.8a-min.js" ></script>
+<script>DD_belatedPNG.fix('*');</script>
+<![endif]-->
+<style type="text/css">
+.select_style{
+    border:solid 1px #ddd;
+    padding: 5px 10px; 
+    size: 10px;
+}
+.pagelist {padding:10px 0; text-align:center;}
+.pagelist span,.pagelist a{ border-radius:3px; border:1px solid #dfdfdf;display:inline-block; padding:5px 12px;}
+.pagelist a{ margin:0 3px;}
+.pagelist span.current{ background:#09F; color:#FFF; border-color:#09F; margin:0 2px;}
+.pagelist a:hover{background:#09F; color:#FFF; border-color:#09F; }
+.pagelist label{ padding-left:15px; color:#999;}
+.pagelist label b{color:red; font-weight:normal; margin:0 3px;}
+
+</style>
+</head>
+<body>
+    <nav class="breadcrumb">
+        <i class="Hui-iconfont">&#xe67f;</i>查询与统计<span class="c-gray en">&gt;</span>学生
+        <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新">
+            <i class="Hui-iconfont">&#xe68f;</i>
+        </a>
+    </nav>
+    <br>
+    <div class="text-c">
+        <form action="" method="POST">
+            学校： 
+            <span class="">
+                <select class="select_style" size="1" name="school_id">
+                    {volist name="school" id="vo"}
+                    <option value="{$vo.id}">{$vo.name}</option>
+                    {/volist}
+                </select>
+            </span>
+            
+            残障类型：
+            <span class="">
+                <select class="select_style" size="1" name="deformity_type">
+                    <option value="">不选</option>
+                    {volist name="type" id="vt"}
+                    <option value="{$vt.id}">{$vt.name}</option>
+                    {/volist}
+                </select>
+            </span>
+            
+            <input type="text" name="name" id="" placeholder=" 姓名" style="width:250px" class="input-text">
+
+		    <button name="" id="btn1" class="btn btn-success" type="submit"><i class="Hui-iconfont">&#xe665;</i>搜索</button>
+        </form>
+		
+	</div>
+
+    <div class="page-container">
+        <div class="panel panel-default ">
+            <div class="panel-header">搜索结果 <span>{$r_count}</span></div>
+            <div class="panel-body">
+                <table class="table table-border table-bg table-bordered">
+                    <thead>
+                        <tr>
+                            <th width="">姓名</th>
+                            <th width="">性别</th>
+                            <th width="">民族</th>
+                            <th width="">生日</th>
+                            <th width="">身份证号</th>
+                            <th width="">户籍所在地</th>
+                            <th width="">学号</th>
+                            <th width="">残障类型</th>
+                            <th width="">户籍类型</th>
+                            <th width="">学校编码</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {volist name="s_result" id="sr"}
+                        <tr class="">
+                            <td>{$sr.name}</td>
+                            <td><?php if($sr['sex']==0) echo "男"; else echo "女";?></td>   
+                            <td>{$sr.national}</td>
+                            <td>{$sr.birthday}</td>
+                            <td>{$sr.id_number}</td>
+                            <td>{$sr.domicile}</td>
+                            <td>{$sr.stu_id}</td>
+                            <td>{$sr.deformity_type}</td>
+                            <td>{$sr.register_type}</td>
+                            <td>{$sr.school_id}</td>
+                            <td>
+								<a href="{:url('admin/query/student_update',array( 'id' => $sr['id']))}">修改</a> | 
+								<a href="{:url('admin/query/student_del', array('id' => $sr['id']))}">删除</a>
+							</td> 
+                        </tr>
+                        {/volist}
+                    </tbody>
+                </table>                   
+            </div>
+            <div class="pagelist">
+                {$s_result->render()}
+            </div>
+        </div>
+        
+    </div>
+
+<script type="text/javascript">
+$(function(){
+});
+</script> 
+
+
+    
+</body>
+</html>
+

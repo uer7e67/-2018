@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Document</title>
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/static/h-ui/css/H-ui.min.css" />
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/static/h-ui.admin/css/H-ui.admin.css" />
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/static/lib/Hui-iconfont/1.0.8/iconfont.css" />
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/static/h-ui.admin/skin/default/skin.css" id="skin" />
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/static/h-ui.admin/css/style.css" />
+<!--_footer 作为公共模版分离出去-->
+<script type="text/javascript" src="__PUBLIC__/static/lib/jquery/1.9.1/jquery.min.js"></script> 
+<script type="text/javascript" src="__PUBLIC__/static/lib/layer/2.4/layer.js"></script>
+<script type="text/javascript" src="__PUBLIC__/static/h-ui/js/H-ui.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/static/h-ui.admin/js/H-ui.admin.js"></script> 
+
+<style type="text/css">
+.select_style{
+    border:solid 1px #ddd;
+    padding: 5px 10px; 
+    size: 10px;
+}
+.pagelist {padding:10px 0; text-align:center;}
+.pagelist span,.pagelist a{ border-radius:3px; border:1px solid #dfdfdf;display:inline-block; padding:5px 12px;}
+.pagelist a{ margin:0 3px;}
+.pagelist span.current{ background:#09F; color:#FFF; border-color:#09F; margin:0 2px;}
+.pagelist a:hover{background:#09F; color:#FFF; border-color:#09F; }
+.pagelist label{ padding-left:15px; color:#999;}
+.pagelist label b{color:red; font-weight:normal; margin:0 3px;}
+
+</style>
+</head>
+<body>
+    <nav class="breadcrumb">
+        <i class="Hui-iconfont">&#xe67f;</i>查询与统计<span class="c-gray en">&gt;</span>教职工
+        <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新">
+            <i class="Hui-iconfont">&#xe68f;</i>
+        </a>
+    </nav>
+
+    <div class="page-container">
+        <div class="panel panel-default">
+            <div class="panel-header">权限列表</div>
+            <div class="panel-body ">
+                <table class="table table-border table-bordered table-bg">
+                    <thead>
+                        <tr>
+                            <th colspan="12" scope="col">
+                                <span>
+                                    <a data-href="" data-title="添加管理员" href="{:url('admin/sysmg/add_rule')}" class="btn btn-primary radius">
+                                        <i class="Hui-iconfont">&#xe600;</i> 添加规则
+                                    </a>
+                                </span>
+                            </th>
+                        </tr>
+                        <tr class="text-c">
+                            <th width="10%">ID</th>
+                            <th width="40%">规则</th>
+                            <th width="20%">规则名</th>
+                            <th width="10%">状态</th>
+                            <th width="20%">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {volist name="rulelst" id="vo"}
+                        <tr class="text-c">
+                            <td>{$vo.id}</td>
+                            <td>{$vo.name}</td>
+                            <td>{$vo.title}</td>
+                            <td>{$vo.status}</td>
+                            <td><a href="{:url('admin/sysmg/update_rule', array('id'=>$vo['id']))}">修改</a>|<a href="{:url('admin/sysmg/del_rule', array('id'=>$vo['id']))}">删除</a></td>
+                        </tr> 
+                        {/volist}   
+                    </tbody>
+                </table>
+            </div>
+            <div class="pagelist">
+                {$rulelst->render()}
+            </div>
+            
+        </div>
+    </div>
+</body>
+</html>
+

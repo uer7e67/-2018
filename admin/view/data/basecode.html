@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Document</title>
+<!--[if lt IE 9]>
+<script type="text/javascript" src="lib/html5shiv.js"></script>
+<script type="text/javascript" src="lib/respond.min.js"></script>
+<![endif]-->
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/static/h-ui/css/H-ui.min.css" />
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/static/h-ui.admin/css/H-ui.admin.css" />
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/static/lib/Hui-iconfont/1.0.8/iconfont.css" />
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/static/h-ui.admin/skin/default/skin.css" id="skin" />
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/static/h-ui.admin/css/style.css" />
+<!--_footer 作为公共模版分离出去-->
+<script type="text/javascript" src="__PUBLIC__/static/lib/jquery/1.9.1/jquery.min.js"></script> 
+<script type="text/javascript" src="__PUBLIC__/static/lib/layer/2.4/layer.js"></script>
+<script type="text/javascript" src="__PUBLIC__/static/h-ui/js/H-ui.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/static/h-ui.admin/js/H-ui.admin.js"></script> 
+<!--/_footer 作为公共模版分离出去-->
+<!--[if IE 6]>
+<script type="text/javascript" src="lib/DD_belatedPNG_0.0.8a-min.js" ></script>
+<script>DD_belatedPNG.fix('*');</script>
+<![endif]-->
+</head>
+<body>
+    <nav class="breadcrumb">
+        <i class="Hui-iconfont">&#xe67f;</i>数据管理<span class="c-gray en">&gt;</span>数据导入
+        <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新">
+            <i class="Hui-iconfont">&#xe68f;</i>
+        </a>
+    </nav>
+
+    <div class="page-container">
+
+        <div class="Huialert Huialert-info">
+            友情提示: 表格中所有项需要添加 ' (单引号)，以免导入后发生错误。 
+        </div>
+
+        <!--模块二-->
+        <div class="panel panel-default">  
+            <div class="panel-header">上传新的excel</div>
+            <div class="panel-body">
+                <form method="post" enctype="multipart/form-data" action="{:url('admin/data/up')}">
+                    选择文件类型：
+                    <select name="type">
+                        <option value="0">学生</option>
+                        <option value="1">教师</option>
+                        <option value="2">学校</option>
+                    </select>
+                    &nbsp; 
+                    选择文件：<input type="file" name="excel">
+                    
+                    <input type="submit" class="btn btn-primary radius" value="上传">
+                </form>
+            </div>
+        </div>
+
+        <!--模块一-->
+        <div class="panel panel-default">
+            <div class="panel-header">已上传的excel</div>
+            <div class="panel-body">
+                <table class="table table-border table-bg table-bordered">
+                    <thead>
+                        <tr>
+                            <th width="20%">表</th>
+                            <th>上传时间</th>
+                            <th>状态</th>
+                            <th>表格类型</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    {volist name="list" id="vo"}      
+                        <tr class="active">
+                            <th>{$vo.name}</th>
+                            <td>{$vo.time}</td>
+                            <td><?php if($vo['state']==0) echo "已提交"; else echo "未提交";?></td>
+                            <td>{$vo.type}</td>
+                            <td>
+                                <a id = "a_delfile" href="{:url('admin/data/delfile', array('id'=>$vo['id']))}">删除</a> | 
+                                <a href="{:url('admin/data/see_file',array('id'=>$vo['id']))}">预览</a>| 
+                                <a href="{:url('admin/data/submit_db',array('id'=>$vo['id']))}">提交</a> 
+                            </td>
+                        </tr>
+                    {/volist}
+                </table>
+            </div>
+        </div>
+
+        <br/>
+
+    </div>
+
+    <script type="text/javascript">
+        var del = document.getElementById("a_delfile"); 
+        del.onclick = function(){
+            var a = confirm("要删除吗");
+            if(a == false){
+                return; 
+            }
+        }
+	</script>
+</body>
+</html>

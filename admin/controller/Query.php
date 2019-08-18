@@ -1,0 +1,401 @@
+<?php 
+namespace app\admin\controller; 
+use think\Controller; 
+use think\Db;
+
+class Query extends BaseController
+{
+    //查询与统计
+
+
+    public function teacher_query()
+    {
+        $count = 0;
+        //获取学校
+        $result = Db::name("school")->select(); 
+        $this->assign("school", $result); 
+
+        if(request()->post())
+        {
+            //获取工号   学校编号 +  4位数字 
+            $teacher_id = input("teacher_id"); 
+        
+            $school_id = input("school_id"); 
+            if($teacher_id == "")
+            {
+                // $res = Db::query("select * from teacher where school_id = ?", [$school_id]);
+                $res = Db::name("teacher")->where("school_id=".$school_id)->paginate(5);
+                $this->assign("teacher", $res);
+            }
+            else
+            {
+                // $res = Db::query("select * from teacher where school_id = ? and tc_id = ?", [$school_id, $teacher_id]);
+                $res = Db::name("teacher")->where("school_id=".$school_id . " and tc_id=".$teacher_id)->paginate(5);
+                $this->assign("teacher", $res);
+            }
+            $count = count($res);
+        }
+        else
+        {
+            $teacher = Db::name("teacher")->paginate(5);
+            $this->assign("teacher", $teacher);
+        }
+
+        $this->assign("count" , $count);
+        return $this->fetch(); 
+    }
+
+    public function teacher_census()
+    {
+        if(request()->post())
+        {
+            $school_id = input("school"); 
+            // echo $school_id;
+            //统计学生  
+            $res1 = Db::table('teacher')->where("school_id=" . $school_id)->count();
+            $res2 = Db::table('teacher')->where("school_id=" . $school_id . " AND train_prifessional=1")->count();
+            // $res3 = Db::table('teacher')->where("school_id=" . $school_id. " AND deformity_type=1")->count();
+            // $res4 = Db::table('teacher')->where("school_id=" . $school_id. " AND deformity_type=2")->count();
+            // $res5 = Db::table('teacher')->where("school_id=" . $school_id. " AND deformity_type=3")->count();
+
+            //统计教师
+            
+
+            $view = array(
+                '1' => array(
+                    'key' => "教师总人数", 
+                    'value' => $res1 
+                ), 
+                '2' => array(
+                    'key' => "接受过专业培训的教师",
+                    'value' => $res2 
+                ), 
+                // '3' => array(
+                //     'key' => "听力缺陷学生人数", 
+                //     'value' => $res3 
+                // ), 
+                // '4' => array(
+                //     'key' => "视力缺陷学生人数", 
+                //     'value' => $res4 
+                // ), 
+                // '5' => array(
+                //     'key' => "其他缺陷学生人数", 
+                //     'value' => $res5
+                // )
+            ); 
+            $this->assign("view", $view);
+        }
+        else
+        {
+            // $school = Db::name("school")->select(); 
+            $this->assign("view", null);         
+        }
+
+        $school = Db::name("school")->select(); 
+        $this->assign("school", $school);
+        return $this->fetch(); 
+    }
+
+    public function teacher_update(){
+        if(request()->post()){
+            $id = input("id");
+            // print_r(input("post."));
+            $res = Db::name("teacher")->where("id", $id)->update(input("post.")); 
+
+            if($res){
+                return $this->success("教师信息更新成功","admin/query/teacher_query"); 
+            }else{
+                return $this->error("教师信息更新失败","admin/query/teacher_query");
+            }
+        }else{
+            $id = input("id"); 
+            $view = Db::name("teacher")->where("id", $id)->select(); 
+            $this->assign("view", $view[0]); 
+        }
+
+        return $this->fetch();
+    }
+
+    public function teacher_del(){
+        $id = input("id"); 
+        $res = Db::name("teacher")->where("id", $id)->delete();
+        if($res == 1){
+            $this->success("删除教师成功");
+        }else{
+            $this->error("删除教师失败"); 
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+    ///=========================================================================================学生部分  ========================
+
+    public function student_query()
+    {
+        $count = 0;
+        //获取学校
+        $result = Db::name("school")->select(); 
+        $this->assign("school", $result); 
+
+        //获取残疾类型 
+        $result2 = Db::name("deformity_type")->select(); 
+        $this->assign("type", $result2);
+
+        
+
+        if(request()->post())
+        {
+            $name = input("name");
+            if(input("deformity_type") == "")
+            { 
+                if($name == "")
+                {
+                    // $sql = "select * from student where school_id = ?";
+                    // $s_result = Db::query("$sql", [input("school_id")])->render();    
+                    $s_result = Db::name("student")->where("school_id=".input("school_id"))->paginate(5); 
+                    $this->assign("s_result", $s_result);     
+                }
+                else
+                {
+                    // $sql = "select * from student where school_id = ? and name = ?";
+                    // $s_result = Db::query("$sql", [input("school_id"), input("name")])->render();    
+                    $s_result = Db::name("student")->where("school_id=".input("school_id")." and name='".$name."'")->paginate(5); 
+                    $this->assign("s_result", $s_result); 
+                }
+            }
+            else 
+            {
+                if($name == "")
+                {
+                    // $sql = "select * from student where school_id = ? and deformity_type =? ";
+                    // $s_result = Db::query("$sql", [input("school_id"), input("deformity_type")])->render();    
+                    $s_result = Db::name("student")->where("school_id=".input("school_id")." and deformity_type=".input("deformity_type"))->paginate(5); 
+                    $this->assign("s_result", $s_result);     
+                }
+                else
+                {
+                    // $sql = "select * from student where school_id = ? and deformity_type = ? and name = ?"; 
+                    // $s_result = Db::query($sql, [input("school_id"), input("deformity_type"), input("name")])->render(); 
+                    $s_result = Db::name("student")->where("school_id=".input("school_id")." and name='".$name."' and deformity_type=".input("deformity_type"))->paginate(5); 
+                    $this->assign("s_result", $s_result);  
+                }
+            }
+            $count = count($s_result);
+        }
+        else
+        {
+            //显示列表
+            $s_result = Db::name("student")->paginate(5);
+            $this->assign("s_result", $s_result); 
+        }
+        $this->assign("r_count", $count); 
+        return $this->fetch();
+    }
+
+
+    public function student_census()
+    {
+        // $sq1 = "select count(*) from student where school_id = 1001";   //统计 1001
+        // $sq2 = "select count(deformity_type) from student where deformity_type=0";  //统计智力残疾 
+        // 
+        //统计全局的 
+        if(request()->post())
+        {
+            $school_id = input("school"); 
+            // echo $school_id;
+            //统计学生  
+            $res1 = Db::table('student')->where("school_id=" . $school_id)->count();
+            $res2 = Db::table('student')->where("school_id=" . $school_id . " AND deformity_type=0")->count();
+            $res3 = Db::table('student')->where("school_id=" . $school_id. " AND deformity_type=1")->count();
+            $res4 = Db::table('student')->where("school_id=" . $school_id. " AND deformity_type=2")->count();
+            $res5 = Db::table('student')->where("school_id=" . $school_id. " AND deformity_type=3")->count();
+
+            //统计教师
+            
+
+            $view = array(
+                '1' => array(
+                    'key' => "学生总人数", 
+                    'value' => $res1 
+                ), 
+                '2' => array(
+                    'key' => "智力缺陷学生人数",
+                    'value' => $res2 
+                ), 
+                '3' => array(
+                    'key' => "听力缺陷学生人数", 
+                    'value' => $res3 
+                ), 
+                '4' => array(
+                    'key' => "视力缺陷学生人数", 
+                    'value' => $res4 
+                ), 
+                '5' => array(
+                    'key' => "其他缺陷学生人数", 
+                    'value' => $res5
+                )
+            ); 
+            $this->assign("view", $view);
+        }
+        else
+        {
+            // $school = Db::name("school")->select(); 
+            $this->assign("view", null);         
+        }
+
+        $school = Db::name("school")->select(); 
+        $this->assign("school", $school);
+        return $this->fetch(); 
+    }   
+
+    public function student_update(){
+        if(request()->post()){
+            $id = input("id");
+            // print_r(input("post."));
+            $res = Db::name("student")->where("id", $id)->update(input("post.")); 
+
+            if($res){
+                return $this->success("学生信息更新成功","admin/query/student_query"); 
+            }else{
+                return $this->error("学生信息更新失败","admin/query/student_query");
+            }
+        }else{
+            $id = input("id"); 
+            $view = Db::name("student")->where("id", $id)->select(); 
+            $this->assign("view", $view[0]); 
+        }
+
+        return $this->fetch();
+    }
+
+    public function student_del(){
+        $id = input("id"); 
+        $res = Db::name("student")->where("id", $id)->delete();
+        if($res == 1){
+            $this->success("删除学生成功");
+        }else{
+            $this->error("删除学生失败"); 
+        }
+    }
+
+
+///==================================================================================================================学校操作部分 =========================================
+
+    public function school_query()
+    {
+        //查询  
+        if(request()->post()){
+            $id = input("id"); 
+            $view = Db::name("school")->where("id", $id)->paginate(5);
+            $this->assign("view", $view);
+        }else{
+            $view = Db::name("school")->paginate(5);
+            $this->assign("view", $view); 
+        }
+
+        return $this->fetch(); 
+    }
+
+    //学校统计
+    public function school_census()
+    {
+        if(request()->post())
+        {
+            $school_id = input("school"); 
+            // echo $school_id;
+            //统计学生  
+            $res1 = Db::table('student')->where("school_id=" . $school_id)->count();
+            $res2 = Db::table('student')->where("school_id=" . $school_id . " AND deformity_type=0")->count();
+            $res3 = Db::table('student')->where("school_id=" . $school_id. " AND deformity_type=1")->count();
+            $res4 = Db::table('student')->where("school_id=" . $school_id. " AND deformity_type=2")->count();
+            $res5 = Db::table('student')->where("school_id=" . $school_id. " AND deformity_type=3")->count();
+
+            //统计教师
+            
+
+            $view = array(
+                '1' => array(
+                    'key' => "学生总人数", 
+                    'value' => $res1 
+                ), 
+                '2' => array(
+                    'key' => "智力缺陷学生人数",
+                    'value' => $res2 
+                ), 
+                '3' => array(
+                    'key' => "听力缺陷学生人数", 
+                    'value' => $res3 
+                ), 
+                '4' => array(
+                    'key' => "视力缺陷学生人数", 
+                    'value' => $res4 
+                ), 
+                '5' => array(
+                    'key' => "其他缺陷学生人数", 
+                    'value' => $res5
+                )
+            ); 
+            $this->assign("view", $view);
+        }
+        else
+        {
+            // $school = Db::name("school")->select(); 
+            $this->assign("view", null);         
+        }
+
+        $school = Db::name("school")->select(); 
+        $this->assign("school", $school);
+        return $this->fetch(); 
+    }
+
+
+    //
+    function school_del(){
+        $id = input("id"); 
+        $res = Db::name("school")->where("id", $id)->delete();
+        if($res == 1){
+            $this->success("删除学校成功");
+        }else{
+            $this->error("删除学校失败"); 
+        }
+    }
+
+    function school_update(){
+        if(request()->post()){
+            $id = input("id");
+            $res = Db::name("school")->where("id", $id)->update(array(
+                "id" => $id, 
+                "name" => input("name"),
+            )); 
+            if($res == 1){
+                return $this->success("学校信息更新成功"); 
+            }else{
+                return $this->error("学校信息更新失败");
+            }
+        }else{
+            $id = input("id"); 
+            $view = Db::name("school")->where("id", $id)->select(); 
+            $this->assign("view", $view[0]); 
+        }
+
+        return $this->fetch();
+    }
+
+
+
+    // sql   
+    // 统计一个学校     选择学生  
+    //       1. 智力缺陷儿童   
+    //       2. 视力残疾儿童 
+    //       3. 听力残疾儿童
+    //       4. 其他残疾儿童  
+
+}
